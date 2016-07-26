@@ -1,5 +1,5 @@
 import {Injectable, EventEmitter, Optional} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import {Http, Response, Headers, RequestOptions } from '@angular/http';
 import {Observable} from 'rxjs/Observable'
 import {Observer} from "rxjs/Observer";
 import 'rxjs/add/observable/of';
@@ -40,7 +40,9 @@ export class TranslateStaticLoader implements TranslateLoader {
      * @returns {any}
      */
     public getTranslation(lang: string): Observable<any> {
-        return this.http.get(`${this.prefix}/${lang}${this.suffix}`)
+        const headers = new Headers({ "Content-Type": "application/json", "Accept": "*/*" });
+        const options = new RequestOptions({ headers: headers });
+        return this.http.get(`${this.prefix}/${lang}${this.suffix}`, options)
             .map((res: Response) => res.json());
     }
 }
